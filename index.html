@@ -8,421 +8,345 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;background:#0a0a0a;color:#fff;overflow:hidden;height:100vh;width:100vw}
+:root{--gold:#e8c36a;--gdim:rgba(232,195,106,.5);--bg2:rgba(255,255,255,.025);--b1:rgba(255,255,255,.06);--t1:#fff;--t2:rgba(255,255,255,.5);--t3:rgba(255,255,255,.25);--green:#4ade80;--blue:#60a5fa;--purple:#c084fc;--rose:#fb7185;--orange:#ff8a3c}
+
 .deck{width:100vw;height:100vh;position:relative}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.4,0,.2,1);padding:40px 72px;text-align:center}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.4,0,.2,1);padding:60px 100px;text-align:center}
 .slide.active{opacity:1;pointer-events:all}
-:root{--gold:#e8c36a;--gdim:rgba(232,195,106,.6);--bg2:rgba(255,255,255,.025);--b1:rgba(255,255,255,.06);--t1:#fff;--t2:rgba(255,255,255,.55);--t3:rgba(255,255,255,.3);--green:#4ade80;--blue:#60a5fa;--purple:#c084fc;--rose:#fb7185;--orange:#ff8a3c;--lime:#b8ff57}
-.dots{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:100}
-.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;transition:all .3s;padding:0}
-.dot.active{background:var(--gold);width:20px;border-radius:3px}
-.arrows{position:fixed;bottom:18px;right:32px;display:flex;gap:6px;z-index:100}
-.arr{background:rgba(255,255,255,.04);border:1px solid var(--b1);color:var(--t3);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+
+/* Nav */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;z-index:100}
+.ctr{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.dots{display:flex;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.12);border:none;cursor:pointer;transition:all .3s;padding:0}
+.dot.active{background:var(--gold);width:18px;border-radius:3px}
+.arrows{display:flex;gap:6px}
+.arr{background:rgba(255,255,255,.04);border:1px solid var(--b1);color:var(--t3);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .arr:hover{background:rgba(255,255,255,.08);color:var(--t1)}
-.ctr{position:fixed;bottom:24px;left:32px;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.14em}
-.eyebrow{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.title{font-size:clamp(36px,4.8vw,64px);font-weight:900;line-height:1.04;letter-spacing:-.03em;color:#fff;margin-bottom:8px}
-.sub{font-size:14px;color:var(--t2);line-height:1.7;max-width:700px;margin:0 auto 18px}
+
+/* Lang toggle */
+.lang{position:fixed;top:24px;right:36px;display:flex;gap:0;border-radius:6px;overflow:hidden;border:1px solid var(--b1);z-index:200;font-size:11px;font-weight:700}
+.lang button{background:transparent;border:none;color:var(--t3);padding:6px 14px;cursor:pointer;transition:all .2s}
+.lang button.active{background:rgba(232,195,106,.12);color:var(--gold)}
+
+/* Typography */
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gdim);margin-bottom:16px}
+h1{font-size:clamp(44px,6vw,80px);font-weight:900;line-height:1.02;letter-spacing:-.04em;margin-bottom:16px}
+h2{font-size:clamp(32px,4.2vw,56px);font-weight:900;line-height:1.06;letter-spacing:-.035em;margin-bottom:12px}
+.sub{font-size:16px;color:var(--t2);line-height:1.75;max-width:600px;margin:0 auto}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--b1);border-radius:16px;padding:28px;text-align:left}
+.card-num{font-size:11px;font-weight:800;color:var(--t3);letter-spacing:.1em;margin-bottom:8px}
+.card-title{font-size:15px;font-weight:800;color:var(--t1);margin-bottom:6px;line-height:1.3}
+.card-body{font-size:13px;color:var(--t2);line-height:1.65}
+
+/* Pill */
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:100px;font-size:12px;font-weight:600;background:var(--bg2);border:1px solid var(--b1);color:var(--t2)}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.modal-overlay.open{display:flex;opacity:1}
+.modal{background:#111;border:1px solid rgba(255,255,255,.1);border-radius:20px;width:90%;max-width:900px;max-height:85vh;overflow-y:auto;padding:36px 40px;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--b1);color:var(--t2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:rgba(255,255,255,.12);color:var(--t1)}
+
+/* Partner logos */
+.logo-card{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:20px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.logo-card img{max-width:80px;max-height:50px;object-fit:contain;margin-bottom:10px}
 </style>
 </head>
 <body>
 
-<div class="dots" id="dots"></div>
-<div class="arrows"><button class="arr" onclick="go(-1)">←</button><button class="arr" onclick="go(1)">→</button></div>
-<div class="ctr" id="ctr"></div>
+<!-- LANG TOGGLE -->
+<div class="lang"><button class="active" onclick="setLang('en')">EN</button><button onclick="setLang('zh')">中文</button></div>
+
+<!-- NAV -->
+<div class="nav-bar">
+  <div class="ctr" id="ctr"></div>
+  <div class="dots" id="dots"></div>
+  <div class="arrows"><button class="arr" onclick="go(-1)">←</button><button class="arr" onclick="go(1)">→</button></div>
+</div>
+
+<!-- PROGRAMMING MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gdim);margin-bottom:14px" data-t="m0">Full Programming · Series 1</div>
+    <h2 style="font-size:28px;margin-bottom:20px" data-t="m1">Event Flow — 27 March</h2>
+
+    <div style="display:flex;flex-direction:column;gap:0">
+      <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--b1)">
+        <div style="font-size:13px;font-weight:800;color:var(--t2);width:56px;flex-shrink:0;text-align:right">4:30</div>
+        <div><div style="font-size:14px;font-weight:700;color:var(--t1)" data-t="m2">Doors Open</div><div style="font-size:12px;color:var(--t2);margin-top:2px" data-t="m3">Registration and mingle</div></div>
+      </div>
+      <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--b1)">
+        <div style="font-size:13px;font-weight:800;color:var(--gold);width:56px;flex-shrink:0;text-align:right">5:00</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--gold)" data-t="m4">Opening Speeches — Lobby</div>
+          <div style="font-size:12px;color:var(--t2);margin-top:4px"><strong style="color:var(--t1)">Li Fan</strong> <span style="color:var(--t3)">· 5 min ·</span> <span data-t="m5">Series welcome and vision</span></div>
+          <div style="font-size:12px;color:var(--t2);margin-top:6px"><strong style="color:var(--t1)">Terence (Hashmeta)</strong> <span style="color:var(--t3)">· 10 min</span></div>
+          <div style="font-size:13px;font-weight:600;font-style:italic;color:var(--t1);margin:4px 0" data-t="m6">"You vibe coded it. Now vibe market it."</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.55" data-t="m7">What works for solo builders: AI as distribution, getting discovered with zero budget.</div>
+          <div style="font-size:12px;color:var(--t2);margin-top:6px"><strong style="color:var(--t1)">Prof Liu Yang (NTU)</strong> <span style="color:var(--t3)">· 10 min</span></div>
+          <div style="font-size:13px;font-weight:600;font-style:italic;color:var(--t1);margin:4px 0" data-t="m8">"Anyone can build with AI. But can you trust what you built?"</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.55" data-t="m9">Trustworthy AI, accountability, and the role of the human builder.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--b1)">
+        <div style="font-size:13px;font-weight:800;color:var(--t2);width:56px;flex-shrink:0;text-align:right">5:30</div>
+        <div><div style="font-size:14px;font-weight:700;color:var(--t1)" data-t="m10">ChronoAI App Demos — Lobby</div><div style="font-size:12px;color:var(--t2);margin-top:2px">SoulGarden (10 min + Q&A) · RiteSet (10 min + Q&A)</div></div>
+      </div>
+      <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--b1)">
+        <div style="font-size:13px;font-weight:800;color:var(--t2);width:56px;flex-shrink:0;text-align:right">6:00</div>
+        <div><div style="font-size:14px;font-weight:700;color:var(--t1)" data-t="m11">3 Curated External Demos — Lobby</div><div style="font-size:12px;color:var(--t2);margin-top:2px" data-t="m12">Pre-vetted community builders · 10 min each + Q&A</div></div>
+      </div>
+      <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--b1)">
+        <div style="font-size:13px;font-weight:800;color:var(--blue);width:56px;flex-shrink:0;text-align:right">6:45</div>
+        <div><div style="font-size:14px;font-weight:700;color:var(--blue)" data-t="m13">Breakout + Networking — New York Room & Lobby</div><div style="font-size:12px;color:var(--t2);margin-top:2px" data-t="m14">Show & Ask feedback session (Li Fan, Wendy, Dannick) · Open networking</div></div>
+      </div>
+      <div style="display:flex;gap:16px;padding:16px 0">
+        <div style="font-size:13px;font-weight:800;color:var(--t2);width:56px;flex-shrink:0;text-align:right">7:30</div>
+        <div><div style="font-size:14px;font-weight:700;color:var(--t1)" data-t="m15">Wrap</div></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="deck" id="deck">
 
 <!-- ═══ SLIDE 1 — HOOK ═══════════════════════════════════════════════ -->
 <div class="slide active">
-  <div style="max-width:820px">
-    <div style="font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gdim);margin-bottom:20px">ChronoAI · What's Next Series</div>
-    <div class="title" style="font-size:clamp(38px,5.5vw,72px);letter-spacing:-.04em;margin-bottom:10px">You Shipped an App.<br><span style="color:var(--gold)">Now What?</span></div>
-    <div style="font-size:16px;color:var(--t2);line-height:1.7;margin-bottom:28px;max-width:600px;margin-left:auto;margin-right:auto">Singapore's first monthly series for builders who've shipped something with AI — and need honest answers about what comes after.</div>
+  <div class="eyebrow" data-t="1">ChronoAI · Monthly Series</div>
+  <h1 data-t="2">You built an app.<br>What's next?</h1>
+  <p class="sub" data-t="3">The questions every AI builder asks after they ship — and nobody in Singapore has built the right room to answer them. Until now.</p>
+</div>
 
-    <div style="display:flex;gap:0;border-radius:12px;overflow:hidden;border:1px solid var(--b1);margin-bottom:24px">
-      <div style="flex:1;padding:14px 18px;background:rgba(232,195,106,.06);text-align:center;border-right:1px solid var(--b1)">
-        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:3px">Series 1</div>
-        <div style="font-size:14px;font-weight:800;color:var(--t1)">You Vibe-Coded an App</div>
-      </div>
-      <div style="flex:1;padding:14px 18px;text-align:center;border-right:1px solid var(--b1)">
-        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:3px">Date</div>
-        <div style="font-size:14px;font-weight:800;color:var(--t1)">Friday 27 March</div>
-      </div>
-      <div style="flex:1;padding:14px 18px;text-align:center;border-right:1px solid var(--b1)">
-        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:3px">Time</div>
-        <div style="font-size:14px;font-weight:800;color:var(--t1)">5:00 – 7:30 PM</div>
-      </div>
-      <div style="flex:1;padding:14px 18px;text-align:center">
-        <div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:3px">Venue</div>
-        <div style="font-size:14px;font-weight:800;color:var(--t1)">ChronoAI Office</div>
-      </div>
+<!-- ═══ SLIDE 2 — THE OPPORTUNITY ════════════════════════════════════ -->
+<div class="slide">
+  <div class="eyebrow" data-t="4">The Opportunity</div>
+  <h2 data-t="5">One-person companies are<br>the fastest-growing segment<br>in tech.</h2>
+  <p class="sub" style="margin-bottom:32px" data-t="6">AI lets one person build, ship, and scale a product. But building alone doesn't mean building in isolation. What's missing isn't tools — it's community, direction, and a path forward.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;width:100%;max-width:900px;text-align:left">
+    <div class="card">
+      <div class="card-num">01</div>
+      <div class="card-title" data-t="7">Builders need direction</div>
+      <div class="card-body" data-t="8">After shipping, most don't know what comes next — marketing, monetisation, scaling.</div>
     </div>
-
-    <div style="display:flex;gap:10px;justify-content:center">
-      <span style="padding:6px 18px;border-radius:100px;font-size:11px;font-weight:600;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);color:var(--green)">✓ Confirmed & Moving Forward</span>
-      <span style="padding:6px 18px;border-radius:100px;font-size:11px;font-weight:600;background:var(--bg2);border:1px solid var(--b1);color:var(--t2)">50 pax · Intimate & Curated</span>
+    <div class="card">
+      <div class="card-num">02</div>
+      <div class="card-title" data-t="9">Knowledge is fragmented</div>
+      <div class="card-body" data-t="10">Insights are scattered. Builders need it in one room, from real practitioners.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">03</div>
+      <div class="card-title" data-t="11">Community is the moat</div>
+      <div class="card-body" data-t="12">The most valuable networks are built in rooms where people share real work and real feedback.</div>
     </div>
   </div>
 </div>
 
-
-<!-- ═══ SLIDE 2 — THE PURPOSE ════════════════════════════════════════ -->
+<!-- ═══ SLIDE 3 — WHAT IT IS ═════════════════════════════════════════ -->
 <div class="slide">
-  <div class="eyebrow">The Purpose · Why This Exists</div>
-  <div class="title" style="font-size:clamp(28px,3.6vw,48px);margin-bottom:6px">Building the Home<br>Singapore's AI Builders Need.</div>
-  <div class="sub" style="margin-bottom:16px">Everyone teaches people how to build with AI. Nobody talks about what happens after — the launch, the market, the first users. This series fills that gap.</div>
+  <div class="eyebrow" data-t="13">The Concept</div>
+  <h2 data-t="14">A monthly series that<br>mirrors the founder journey.</h2>
+  <p class="sub" style="margin-bottom:32px" data-t="15">Each episode follows a different phase of building a one-person company. 50 curated builders, solopreneurs, and investors — learning, demoing, and giving each other real feedback.</p>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:1060px;text-align:left;margin-bottom:14px">
-
-    <div style="background:rgba(232,195,106,.04);border:1px solid rgba(232,195,106,.15);border-radius:14px;padding:22px 24px">
-      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:10px">What This Series Is</div>
-      <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:10px;line-height:1.3">A monthly gathering of 50 builders, solopreneurs, and investors — each episode tackling a different phase of founding a one-person company.</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="font-size:12px;color:var(--t2);display:flex;gap:8px"><span style="color:var(--gold)">→</span>Not a conference. Real conversations.</div>
-        <div style="font-size:12px;color:var(--t2);display:flex;gap:8px"><span style="color:var(--gold)">→</span>Not networking dressed up as content.</div>
-        <div style="font-size:12px;color:var(--t2);display:flex;gap:8px"><span style="color:var(--gold)">→</span>A room where builders actually help each other.</div>
-      </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;width:100%;max-width:900px;text-align:left;margin-bottom:20px">
+    <div class="card" style="border-color:rgba(232,195,106,.15);background:rgba(232,195,106,.03)">
+      <div style="font-size:22px;margin-bottom:10px">🎓</div>
+      <div class="card-title" data-t="16">Learn</div>
+      <div class="card-body" data-t="17">Industry experts share what works — short, actionable, no fluff.</div>
     </div>
+    <div class="card" style="border-color:rgba(96,165,250,.15);background:rgba(96,165,250,.03)">
+      <div style="font-size:22px;margin-bottom:10px">🚀</div>
+      <div class="card-title" data-t="18">Demo</div>
+      <div class="card-body" data-t="19">Builders showcase real products. Full workflow — build to deploy to GTM.</div>
+    </div>
+    <div class="card" style="border-color:rgba(192,132,252,.15);background:rgba(192,132,252,.03)">
+      <div style="font-size:22px;margin-bottom:10px">💬</div>
+      <div class="card-title" data-t="20">Show & Ask</div>
+      <div class="card-body" data-t="21">Intimate feedback. Present your idea, get direct expert input.</div>
+    </div>
+  </div>
 
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.15);border-radius:14px;padding:18px 22px;flex:1">
-        <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);margin-bottom:8px">Who It's For</div>
-        <div style="display:flex;flex-direction:column;gap:5px">
-          <div style="font-size:12px;color:var(--t1);display:flex;gap:8px"><span style="color:var(--blue)">→</span><strong>Vibe coders & AI builders</strong></div>
-          <div style="font-size:12px;color:var(--t1);display:flex;gap:8px"><span style="color:var(--blue)">→</span><strong>Solopreneurs & aspiring founders</strong></div>
-          <div style="font-size:12px;color:var(--t1);display:flex;gap:8px"><span style="color:var(--blue)">→</span><strong>Investors backing solo founders</strong></div>
-          <div style="font-size:12px;color:var(--t1);display:flex;gap:8px"><span style="color:var(--blue)">→</span><strong>Industry practitioners & experts</strong></div>
-        </div>
-      </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+    <span class="pill"><span style="color:var(--gold)">Ep.1</span> <span data-t="22">Friday, March 27</span></span>
+    <span class="pill" data-t="23">50 Curated attendees</span>
+    <span class="pill" data-t="24">5:00 — 7:30 PM</span>
+    <span class="pill" data-t="25">ChronoAI Office</span>
+  </div>
+</div>
 
-      <div style="background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.15);border-radius:14px;padding:18px 22px;flex:1">
-        <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);margin-bottom:8px">Our Team Owns</div>
-        <div style="font-size:12px;color:var(--t2);line-height:1.6">Concept, theme, creative direction, design, publishing, event listing (Lu.ma) and personal invitations.</div>
-      </div>
+<!-- ═══ SLIDE 4 — PROGRAMMING (HIGH LEVEL) ═══════════════════════════ -->
+<div class="slide">
+  <div class="eyebrow" data-t="26">Debut Episode · March 27</div>
+  <h2 data-t="27">You Vibe-Coded an App.<br><span style="color:var(--gold)">What's Next?</span></h2>
+  <p class="sub" style="margin-bottom:28px" data-t="28">Three speakers. Two product demos. Three external demos. A breakout session for real feedback. All in one evening.</p>
 
-      <div style="background:rgba(192,132,252,.04);border:1px solid rgba(192,132,252,.15);border-radius:14px;padding:18px 22px;flex:1">
-        <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--purple);margin-bottom:8px">Li Fan & Ann's Team Owns</div>
-        <div style="font-size:12px;color:var(--t2);line-height:1.6">Logistics, on-the-day organisation, decor, space setup, and guest speaker coordination.</div>
-      </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;width:100%;max-width:900px;text-align:left;margin-bottom:24px">
+    <div class="card">
+      <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:6px" data-t="29">5:00 PM — Speeches</div>
+      <div class="card-body"><strong style="color:var(--t1)">Li Fan</strong>, <strong style="color:var(--t1)">Terence</strong> <span style="color:var(--t3)">(Hashmeta)</span>, <strong style="color:var(--t1)">Prof Liu Yang</strong> <span style="color:var(--t3)">(NTU)</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:800;color:var(--t1);margin-bottom:6px" data-t="30">5:30 PM — Demos</div>
+      <div class="card-body" data-t="31">SoulGarden · RiteSet · 3 curated external builders</div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:800;color:var(--blue);margin-bottom:6px" data-t="32">6:45 PM — Breakout</div>
+      <div class="card-body" data-t="33">Show & Ask feedback · Open networking</div>
+    </div>
+  </div>
+
+  <button onclick="openModal()" style="padding:12px 28px;border-radius:100px;background:rgba(232,195,106,.1);border:1px solid rgba(232,195,106,.25);color:var(--gold);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit" onmouseover="this.style.background='rgba(232,195,106,.18)'" onmouseout="this.style.background='rgba(232,195,106,.1)'" data-t="34">View Full Programming →</button>
+</div>
+
+<!-- ═══ SLIDE 5 — TIMELINE ═══════════════════════════════════════════ -->
+<div class="slide">
+  <div class="eyebrow" data-t="35">Launch Timeline</div>
+  <h2 data-t="36">We're moving fast.</h2>
+  <p class="sub" style="margin-bottom:36px" data-t="37">Everything is in motion. Here's the path to March 27.</p>
+
+  <div style="display:flex;align-items:flex-start;gap:0;width:100%;max-width:900px;position:relative;margin-bottom:32px">
+    <div style="position:absolute;top:15px;left:8%;right:8%;height:2px;background:rgba(232,195,106,.1)"></div>
+
+    <div style="flex:1;text-align:center;position:relative;z-index:1">
+      <div style="width:12px;height:12px;border-radius:50%;background:var(--green);margin:8px auto 12px;box-shadow:0 0 10px rgba(74,222,128,.5)"></div>
+      <div style="font-size:13px;font-weight:800;color:var(--green)">Mar 11</div>
+      <div style="font-size:12px;color:var(--t1);font-weight:600;margin-top:4px" data-t="38">Proposal Finalised</div>
+      <div style="font-size:11px;color:var(--t2);margin-top:2px">✓</div>
+    </div>
+    <div style="flex:1;text-align:center;position:relative;z-index:1">
+      <div style="width:12px;height:12px;border-radius:50%;background:var(--gold);margin:8px auto 12px;box-shadow:0 0 10px rgba(232,195,106,.4)"></div>
+      <div style="font-size:13px;font-weight:800;color:var(--gold)">Mar 12</div>
+      <div style="font-size:12px;color:var(--t1);font-weight:600;margin-top:4px" data-t="39">WhatsApp AI<br>Community Share</div>
+    </div>
+    <div style="flex:1;text-align:center;position:relative;z-index:1">
+      <div style="width:12px;height:12px;border-radius:50%;background:var(--gold);margin:8px auto 12px"></div>
+      <div style="font-size:13px;font-weight:800;color:var(--gold)">Mar 13</div>
+      <div style="font-size:12px;color:var(--t1);font-weight:600;margin-top:4px" data-t="40">Event Live<br>on Lu.ma</div>
+    </div>
+    <div style="flex:1;text-align:center;position:relative;z-index:1">
+      <div style="width:12px;height:12px;border-radius:50%;background:var(--orange);margin:8px auto 12px"></div>
+      <div style="font-size:13px;font-weight:800;color:var(--orange)">Mar 12–20</div>
+      <div style="font-size:12px;color:var(--t1);font-weight:600;margin-top:4px" data-t="41">Event Prep</div>
+      <div style="font-size:11px;color:var(--t2);margin-top:2px" data-t="42">Confirm demos<br>+ outreach</div>
+    </div>
+    <div style="flex:1;text-align:center;position:relative;z-index:1">
+      <div style="width:12px;height:12px;border-radius:50%;background:var(--rose);margin:8px auto 12px;box-shadow:0 0 10px rgba(251,113,133,.5)"></div>
+      <div style="font-size:13px;font-weight:800;color:var(--rose)">Mar 27</div>
+      <div style="font-size:12px;color:var(--t1);font-weight:600;margin-top:4px" data-t="43">Event Day</div>
+      <div style="font-size:11px;color:var(--t2);margin-top:2px">5:00 – 7:30 PM</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:700px;text-align:left">
+    <div class="card" style="padding:18px 22px">
+      <div style="font-size:10px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px" data-t="44">Our Team</div>
+      <div class="card-body" data-t="45">Concept, design, publishing, personal invitations, event listing</div>
+    </div>
+    <div class="card" style="padding:18px 22px">
+      <div style="font-size:10px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px" data-t="46">Li Fan & Ann's Team</div>
+      <div class="card-body" data-t="47">Logistics, organisation, decor, guest speaker coordination</div>
     </div>
   </div>
 </div>
 
-
-<!-- ═══ SLIDE 3 — PROGRAMMING ════════════════════════════════════════ -->
+<!-- ═══ SLIDE 6 — ROADMAP + VISION ═══════════════════════════════════ -->
 <div class="slide">
-  <div class="eyebrow">Series 1 · Programming</div>
-  <div class="title" style="font-size:clamp(26px,3.2vw,42px);margin-bottom:4px">You Vibe-Coded an App. <span style="color:var(--gold)">What's Next?</span></div>
-  <div class="sub" style="margin-bottom:14px;font-size:13px">Friday 27 March · 5:00 – 7:30 PM · ChronoAI Office · 50 pax</div>
+  <div class="eyebrow" data-t="48">Series Roadmap</div>
+  <h2 data-t="49">Five episodes.<br>The full builder lifecycle.</h2>
+  <p class="sub" style="margin-bottom:28px" data-t="50">Each episode follows a different phase — from first build to expansion to reimagining work in an AI-native world.</p>
 
-  <div style="display:grid;grid-template-columns:300px 1fr;gap:16px;width:100%;max-width:1080px;text-align:left">
-
-    <!-- EVENT FLOW -->
-    <div>
-      <div style="font-size:11px;font-weight:800;color:var(--t1);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px">Event Flow</div>
-
-      <div style="display:flex;flex-direction:column;gap:0">
-        <div style="display:flex;gap:12px;padding-bottom:14px;position:relative">
-          <div style="position:absolute;left:68px;top:20px;bottom:0;width:1px;background:rgba(232,195,106,.12)"></div>
-          <div style="font-size:12px;font-weight:800;color:var(--t2);width:52px;text-align:right;padding-top:2px;flex-shrink:0">4:30</div>
-          <div style="width:9px;height:9px;border-radius:50%;background:var(--t2);flex-shrink:0;margin-top:4px"></div>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:var(--t1)">Doors Open</div>
-            <div style="font-size:11px;color:var(--t2);margin-top:2px">Registration and mingle</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;padding-bottom:14px;position:relative">
-          <div style="position:absolute;left:68px;top:20px;bottom:0;width:1px;background:rgba(232,195,106,.12)"></div>
-          <div style="font-size:12px;font-weight:800;color:var(--gold);width:52px;text-align:right;padding-top:2px;flex-shrink:0">5:00</div>
-          <div style="width:9px;height:9px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px;box-shadow:0 0 8px rgba(232,195,106,.5)"></div>
-          <div>
-            <div style="font-size:13px;font-weight:800;color:var(--gold)">Opening Speeches</div>
-            <div style="font-size:11px;color:var(--t1);margin-top:2px">Li Fan · Terence (Hashmeta) · Prof Liu Yang (NTU)</div>
-            <div style="font-size:10px;color:var(--t2);margin-top:1px">📍 Lobby</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;padding-bottom:14px;position:relative">
-          <div style="position:absolute;left:68px;top:20px;bottom:0;width:1px;background:rgba(232,195,106,.12)"></div>
-          <div style="font-size:12px;font-weight:800;color:var(--t2);width:52px;text-align:right;padding-top:2px;flex-shrink:0">5:30</div>
-          <div style="width:9px;height:9px;border-radius:50%;background:var(--t2);flex-shrink:0;margin-top:4px"></div>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:var(--t1)">ChronoAI App Demos</div>
-            <div style="font-size:11px;color:var(--t1);margin-top:2px">SoulGarden (10 min + Q&A) · RiteSet (10 min + Q&A)</div>
-            <div style="font-size:10px;color:var(--t2);margin-top:1px">📍 Lobby</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;padding-bottom:14px;position:relative">
-          <div style="position:absolute;left:68px;top:20px;bottom:0;width:1px;background:rgba(232,195,106,.12)"></div>
-          <div style="font-size:12px;font-weight:800;color:var(--t2);width:52px;text-align:right;padding-top:2px;flex-shrink:0">6:00</div>
-          <div style="width:9px;height:9px;border-radius:50%;background:var(--t2);flex-shrink:0;margin-top:4px"></div>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:var(--t1)">3 Curated External Demos</div>
-            <div style="font-size:11px;color:var(--t1);margin-top:2px">Pre-vetted community builders · 10 min each + Q&A</div>
-            <div style="font-size:10px;color:var(--t2);margin-top:1px">📍 Lobby</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;padding-bottom:14px;position:relative">
-          <div style="position:absolute;left:68px;top:20px;bottom:0;width:1px;background:rgba(232,195,106,.12)"></div>
-          <div style="font-size:12px;font-weight:800;color:var(--blue);width:52px;text-align:right;padding-top:2px;flex-shrink:0">6:45</div>
-          <div style="width:9px;height:9px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px;box-shadow:0 0 8px rgba(96,165,250,.5)"></div>
-          <div>
-            <div style="font-size:13px;font-weight:800;color:var(--blue)">Breakout + Networking</div>
-            <div style="font-size:11px;color:var(--t1);margin-top:2px">Show & Ask feedback session · Open networking</div>
-            <div style="font-size:10px;color:var(--t2);margin-top:1px">📍 New York Room + Lobby</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;padding-bottom:0">
-          <div style="font-size:12px;font-weight:800;color:var(--t2);width:52px;text-align:right;padding-top:2px;flex-shrink:0">7:30</div>
-          <div style="width:9px;height:9px;border-radius:50%;background:var(--t2);flex-shrink:0;margin-top:4px"></div>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:var(--t1)">Wrap</div>
-            <div style="font-size:11px;color:var(--t2);margin-top:2px">Close & final connections</div>
-          </div>
-        </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:1000px;text-align:left;margin-bottom:20px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="card" style="border-color:rgba(232,195,106,.2);background:rgba(232,195,106,.04);padding:16px 20px">
+        <div style="font-size:10px;font-weight:800;color:var(--gold);letter-spacing:.1em;margin-bottom:4px">EPISODE 1 · MAR 27 · CONFIRMED</div>
+        <div style="font-size:16px;font-weight:800;color:var(--t1)">You Vibe-Coded an App. What's Next?</div>
+      </div>
+      <div class="card" style="padding:14px 20px">
+        <div style="font-size:10px;font-weight:800;color:var(--t3);letter-spacing:.1em;margin-bottom:3px">EPISODE 2</div>
+        <div style="font-size:14px;font-weight:800;color:var(--t1)">You Launched. Pre-Revenue. What's Next?</div>
+      </div>
+      <div class="card" style="padding:14px 20px">
+        <div style="font-size:10px;font-weight:800;color:var(--t3);letter-spacing:.1em;margin-bottom:3px">EPISODE 3</div>
+        <div style="font-size:14px;font-weight:800;color:var(--t1)">You Hit Healthy MRR. What's Next?</div>
+      </div>
+      <div class="card" style="padding:14px 20px">
+        <div style="font-size:10px;font-weight:800;color:var(--t3);letter-spacing:.1em;margin-bottom:3px">EPISODE 4</div>
+        <div style="font-size:14px;font-weight:800;color:var(--t1)">AI Replaced Your Job. What's Next?</div>
+      </div>
+      <div class="card" style="padding:14px 20px">
+        <div style="font-size:10px;font-weight:800;color:var(--t3);letter-spacing:.1em;margin-bottom:3px">EPISODE 5</div>
+        <div style="font-size:14px;font-weight:800;color:var(--t1)">AI as Companion. What's Next?</div>
       </div>
     </div>
 
-    <!-- SPEAKERS -->
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="font-size:11px;font-weight:800;color:var(--t1);text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px">Speaker Lineup</div>
-
-      <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:12px 16px">
-        <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:800;color:var(--t1)">Li Fan</div><span style="font-size:10px;color:var(--t2);font-weight:700">5 min</span></div>
-        <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;margin-bottom:4px">ChronoAI · Host</div>
-        <div style="font-size:11px;color:var(--t2);line-height:1.5">Series welcome and vision.</div>
-      </div>
-
-      <div style="background:rgba(232,195,106,.05);border:1px solid rgba(232,195,106,.18);border-radius:12px;padding:12px 16px">
-        <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:800;color:var(--t1)">Terence</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(232,195,106,.1);color:var(--gold);font-weight:700">10 min</span></div>
-        <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;margin-bottom:5px">Hashmeta · AI Marketing</div>
-        <div style="font-size:12px;font-weight:700;color:var(--t1);font-style:italic;margin-bottom:4px">"You vibe coded it. Now vibe market it."</div>
-        <div style="font-size:11px;color:var(--t2);line-height:1.55">What actually works for solo builders: why traditional marketing fails you, how AI tools are now your biggest distribution channel, and practical steps to get discovered with zero budget.</div>
-      </div>
-
-      <div style="background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.15);border-radius:12px;padding:12px 16px">
-        <div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:800;color:var(--t1)">Prof Liu Yang</div><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(96,165,250,.1);color:var(--blue);font-weight:700">10 min</span></div>
-        <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;margin-bottom:5px">NTU · President's Chair in Computer Science</div>
-        <div style="font-size:12px;font-weight:700;color:var(--t1);font-style:italic;margin-bottom:4px">"Anyone can build with AI. But can you trust what you built?"</div>
-        <div style="font-size:11px;color:var(--t2);line-height:1.55">Trustworthy AI for the everyday builder. What happens when your AI app makes a wrong decision, who is accountable, and the role of the human builder.</div>
-      </div>
-
-      <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:12px 16px">
-        <div style="font-size:13px;font-weight:800;color:var(--t1);margin-bottom:4px">Breakout: Show & Ask</div>
-        <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px">New York Room · 6:45 PM</div>
-        <div style="font-size:11px;color:var(--t2);line-height:1.55">Intimate feedback session. Builders present their app or idea and receive direct feedback from Li Fan, Wendy on marketing, and Dannick on design.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ SLIDE 4 — LAUNCH TIMELINE ════════════════════════════════════ -->
-<div class="slide">
-  <div class="eyebrow">Launch Timeline · Where We Are</div>
-  <div class="title" style="font-size:clamp(28px,3.6vw,48px);margin-bottom:6px">From Proposal<br>to Event Day.</div>
-  <div class="sub" style="margin-bottom:20px">Everything is in motion. Here's the path from today to 27 March.</div>
-
-  <div style="width:100%;max-width:900px">
-
-    <!-- HORIZONTAL TIMELINE -->
-    <div style="display:flex;align-items:flex-start;gap:0;margin-bottom:24px;position:relative">
-      <div style="position:absolute;top:14px;left:5%;right:5%;height:2px;background:rgba(232,195,106,.12);z-index:0"></div>
-
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:12px;height:12px;border-radius:50%;background:var(--green);margin:8px auto 10px;box-shadow:0 0 10px rgba(74,222,128,.5)"></div>
-        <div style="font-size:12px;font-weight:800;color:var(--green)">11 March</div>
-        <div style="font-size:11px;color:var(--t1);font-weight:600;margin-top:4px">Proposal<br>Finalisation</div>
-        <div style="font-size:10px;color:var(--t2);margin-top:3px">✓ Done</div>
-      </div>
-
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:12px;height:12px;border-radius:50%;background:var(--gold);margin:8px auto 10px;box-shadow:0 0 10px rgba(232,195,106,.5)"></div>
-        <div style="font-size:12px;font-weight:800;color:var(--gold)">12 March</div>
-        <div style="font-size:11px;color:var(--t1);font-weight:600;margin-top:4px">Share to<br>WhatsApp AI Community</div>
-      </div>
-
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:12px;height:12px;border-radius:50%;background:var(--gold);margin:8px auto 10px"></div>
-        <div style="font-size:12px;font-weight:800;color:var(--gold)">13 March</div>
-        <div style="font-size:11px;color:var(--t1);font-weight:600;margin-top:4px">Event Live<br>on Lu.ma</div>
-      </div>
-
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:12px;height:12px;border-radius:50%;background:var(--orange);margin:8px auto 10px"></div>
-        <div style="font-size:12px;font-weight:800;color:var(--orange)">12–20 Mar</div>
-        <div style="font-size:11px;color:var(--t1);font-weight:600;margin-top:4px">Event Prep</div>
-        <div style="font-size:10px;color:var(--t2);margin-top:3px">Confirm external demos<br>+ further outreach</div>
-      </div>
-
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:12px;height:12px;border-radius:50%;background:var(--rose);margin:8px auto 10px;box-shadow:0 0 10px rgba(251,113,133,.5)"></div>
-        <div style="font-size:12px;font-weight:800;color:var(--rose)">27 March</div>
-        <div style="font-size:11px;color:var(--t1);font-weight:600;margin-top:4px">Event Day</div>
-        <div style="font-size:10px;color:var(--t2);margin-top:3px">5:00 PM – 7:30 PM<br>ChronoAI Office</div>
-      </div>
-    </div>
-
-    <!-- Outreach channels -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">
-      <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:14px 16px;text-align:center">
-        <div style="font-size:18px;margin-bottom:6px">📅</div>
-        <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px">Lu.ma</div>
-        <div style="font-size:10px;color:var(--t2)">Primary registration + platform discovery</div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:14px 16px;text-align:center">
-        <div style="font-size:18px;margin-bottom:6px">💬</div>
-        <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px">WhatsApp AI Channels</div>
-        <div style="font-size:10px;color:var(--t2)">ChronoAI, OpenClaw, builder communities</div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:14px 16px;text-align:center">
-        <div style="font-size:18px;margin-bottom:6px">🔗</div>
-        <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px">LinkedIn</div>
-        <div style="font-size:10px;color:var(--t2)">Speaker amplification + brand posts</div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:14px 16px;text-align:center">
-        <div style="font-size:18px;margin-bottom:6px">🤝</div>
-        <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px">Partner Outreach</div>
-        <div style="font-size:10px;color:var(--t2)">Hashmeta, SGInnovate, e27, First Prompt</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- ═══ SLIDE 5 — ROADMAP + BIGGER GOAL ══════════════════════════════ -->
-<div class="slide">
-  <div class="eyebrow">The Series · The Bigger Goal</div>
-  <div class="title" style="font-size:clamp(28px,3.8vw,50px);margin-bottom:6px">From Monthly Series<br>to AI Collective.</div>
-  <div class="sub" style="margin-bottom:14px;font-size:13px">Each episode follows the solo founder journey. Over time, this becomes the foundation for something much larger.</div>
-
-  <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:14px;width:100%;max-width:1080px;text-align:left">
-
-    <!-- ROADMAP -->
-    <div>
-      <div style="font-size:12px;font-weight:800;color:var(--t1);text-transform:uppercase;letter-spacing:.14em;margin-bottom:12px">Series Roadmap</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="background:rgba(232,195,106,.06);border:1px solid rgba(232,195,106,.2);border-radius:12px;padding:14px 18px">
-          <div style="font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px">Episode 1 · 27 March · Confirmed</div>
-          <div style="font-size:15px;font-weight:800;color:#fff;line-height:1.3">You Vibe-Coded an App. What's Next?</div>
-          <div style="font-size:11px;color:var(--t2);margin-top:3px">Build → Launch → GTM. The questions after you ship.</div>
-        </div>
-        <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:12px 18px">
-          <div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px">Episode 2</div>
-          <div style="font-size:14px;font-weight:800;color:var(--t1);line-height:1.3">You launched. Pre-revenue. What's Next?</div>
-          <div style="font-size:11px;color:var(--t2);margin-top:2px">Marketing, GTM, first paying user</div>
-        </div>
-        <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:12px 18px">
-          <div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px">Episode 3</div>
-          <div style="font-size:14px;font-weight:800;color:var(--t1);line-height:1.3">You hit healthy MRR. What's Next?</div>
-          <div style="font-size:11px;color:var(--t2);margin-top:2px">Expansion, scaling as a solo founder</div>
-        </div>
-        <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:12px 18px">
-          <div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px">Episode 4</div>
-          <div style="font-size:14px;font-weight:800;color:var(--t1);line-height:1.3">AI replaced your job. What's Next?</div>
-          <div style="font-size:11px;color:var(--t2);margin-top:2px">Freedom, reinvention, what to build</div>
-        </div>
-        <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:12px 18px">
-          <div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px">Episode 5</div>
-          <div style="font-size:14px;font-weight:800;color:var(--t1);line-height:1.3">AI as companion. What's Next?</div>
-          <div style="font-size:11px;color:var(--t2);margin-top:2px">Human-AI relationship in daily life</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- BIGGER GOAL + WHAT IT ENABLES -->
     <div style="display:flex;flex-direction:column;gap:12px">
-
-      <div style="background:linear-gradient(145deg,rgba(232,195,106,.07),rgba(192,132,252,.05));border:1px solid rgba(232,195,106,.2);border-radius:16px;padding:24px 24px">
-        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:10px">The Bigger Goal</div>
-        <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:10px;line-height:1.2">What's Next → AI Collective</div>
-        <div style="font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:14px">This series is the foundation for establishing a <strong style="color:var(--t1)">Collective</strong> — bringing all ChronoAI's companies together to build an <strong style="color:var(--t1)">AI accelerator community</strong> in Singapore.</div>
+      <div class="card" style="background:linear-gradient(145deg,rgba(232,195,106,.05),rgba(192,132,252,.04));border-color:rgba(232,195,106,.18);padding:28px">
+        <div style="font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px" data-t="51">The Bigger Goal</div>
+        <div style="font-size:22px;font-weight:900;color:var(--t1);margin-bottom:12px;line-height:1.2" data-t="52">This series is the foundation<br>for The Collective.</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:16px" data-t="53">An AI accelerator community that brings ChronoAI's companies and partners together — supporting the next wave of builders.</div>
         <div style="display:flex;align-items:center;gap:8px">
-          <div style="padding:8px 16px;border-radius:8px;background:rgba(232,195,106,.1);border:1px solid rgba(232,195,106,.2);font-size:12px;font-weight:700;color:var(--gold)">Monthly Series</div>
-          <div style="font-size:16px;color:var(--t3)">→</div>
-          <div style="padding:8px 16px;border-radius:8px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);font-size:12px;font-weight:700;color:var(--blue)">Trusted Community</div>
-          <div style="font-size:16px;color:var(--t3)">→</div>
-          <div style="padding:8px 16px;border-radius:8px;background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.2);font-size:12px;font-weight:700;color:var(--purple)">AI Collective</div>
+          <span class="pill" style="background:rgba(232,195,106,.08);border-color:rgba(232,195,106,.18);color:var(--gold);font-weight:700" data-t="54">Community</span>
+          <span style="color:var(--t3)">→</span>
+          <span class="pill" style="background:rgba(96,165,250,.06);border-color:rgba(96,165,250,.15);color:var(--blue);font-weight:700" data-t="55">AI Accelerator</span>
+          <span style="color:var(--t3)">→</span>
+          <span class="pill" style="background:rgba(192,132,252,.08);border-color:rgba(192,132,252,.18);color:var(--purple);font-weight:700" data-t="56">The Collective</span>
         </div>
       </div>
 
-      <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:16px;padding:20px 22px">
-        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--purple);margin-bottom:12px">What the Series Enables</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px">🤝</div>
-            <div><div style="font-size:13px;font-weight:700;color:var(--t1)">Commercial Opportunity</div><div style="font-size:11px;color:var(--t2);line-height:1.5;margin-top:2px">Pipeline for partnerships, integrations, and revenue across ChronoAI's portfolio</div></div>
-          </div>
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px">🎯</div>
-            <div><div style="font-size:13px;font-weight:700;color:var(--t1)">Talent Pipeline</div><div style="font-size:11px;color:var(--t2);line-height:1.5;margin-top:2px">Direct access to builders and founders we want to recruit, invest in, or partner with</div></div>
-          </div>
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(232,195,106,.06);border:1px solid rgba(232,195,106,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px">✨</div>
-            <div><div style="font-size:13px;font-weight:700;color:var(--t1)">Long-Term Brand Equity</div><div style="font-size:11px;color:var(--t2);line-height:1.5;margin-top:2px">Positioning that no ad spend can replicate — earned through consistent presence</div></div>
-          </div>
+      <div class="card" style="padding:22px 28px">
+        <div style="font-size:10px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px" data-t="57">What the Series Enables</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-size:18px">🤝</span><div><div style="font-size:14px;font-weight:700;color:var(--t1)" data-t="58">Commercial Opportunity</div><div style="font-size:12px;color:var(--t2)" data-t="59">Partnerships, integrations, revenue</div></div></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-size:18px">🎯</span><div><div style="font-size:14px;font-weight:700;color:var(--t1)" data-t="60">Talent Pipeline</div><div style="font-size:12px;color:var(--t2)" data-t="61">Access to builders we want to recruit or invest in</div></div></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-size:18px">✨</span><div><div style="font-size:14px;font-weight:700;color:var(--t1)" data-t="62">Brand Equity</div><div style="font-size:12px;color:var(--t2)" data-t="63">Positioning no ad spend can replicate</div></div></div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-
-<!-- ═══ SLIDE 6 — PARTNERS ═══════════════════════════════════════════ -->
+<!-- ═══ SLIDE 7 — PARTNERS + CLOSE ═══════════════════════════════════ -->
 <div class="slide">
-  <div class="eyebrow">Our Ecosystem</div>
-  <div class="title" style="font-size:clamp(28px,3.8vw,50px);margin-bottom:6px">What's Next<br>AI Collective Partners.</div>
-  <div class="sub" style="margin-bottom:18px">The partners making this series possible — and the ecosystem we're building together.</div>
+  <div class="eyebrow" data-t="64">Our Ecosystem</div>
+  <h2 data-t="65">What's Next<br>AI Collective Partners.</h2>
+  <p class="sub" style="margin-bottom:28px" data-t="66">The partners making this series possible — and the ecosystem we're building together.</p>
 
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;width:100%;max-width:1060px;margin-bottom:20px">
-
-    <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center">
-      <div style="width:90px;height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:10px"><img src="./img/hashmeta.png" alt="Hashmeta" style="max-width:100%;max-height:100%;object-fit:contain;filter:brightness(0) invert(1)"></div>
-      <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:2px">Hashmeta</div>
-      <div style="font-size:10px;color:var(--t2)">AI Marketing</div>
-      <div style="margin-top:6px;padding:3px 10px;border-radius:100px;font-size:9px;font-weight:700;background:rgba(232,195,106,.08);border:1px solid rgba(232,195,106,.18);color:var(--gold)">Speaker</div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;width:100%;max-width:900px;margin-bottom:28px">
+    <div class="logo-card">
+      <img src="./img/hashmeta.png" alt="Hashmeta" style="filter:brightness(0) invert(1)">
+      <div style="font-size:13px;font-weight:800;color:var(--t1)">Hashmeta</div>
+      <div style="font-size:10px;color:var(--t2);margin-top:2px">Speaker</div>
     </div>
-
-    <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center">
-      <div style="width:90px;height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:10px"><img src="./img/ai-apex.png" alt="AI APEX Asia" style="max-width:100%;max-height:100%;object-fit:contain"></div>
-      <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:2px">AI APEX Asia</div>
-      <div style="font-size:10px;color:var(--t2)">AI Leadership Network</div>
-      <div style="margin-top:6px;padding:3px 10px;border-radius:100px;font-size:9px;font-weight:700;background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.18);color:var(--purple)">Knowledge</div>
+    <div class="logo-card">
+      <img src="./img/ai-apex.png" alt="AI APEX Asia">
+      <div style="font-size:13px;font-weight:800;color:var(--t1)">AI APEX Asia</div>
+      <div style="font-size:10px;color:var(--t2);margin-top:2px">Knowledge</div>
     </div>
-
-    <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center">
-      <div style="width:90px;height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:10px"><img src="./img/first-prompt.png" alt="First Prompt" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:8px"></div>
-      <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:2px">First Prompt</div>
-      <div style="font-size:10px;color:var(--t2)">AI Practitioner Community</div>
-      <div style="margin-top:6px;padding:3px 10px;border-radius:100px;font-size:9px;font-weight:700;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);color:var(--blue)">Outreach</div>
+    <div class="logo-card">
+      <img src="./img/first-prompt.png" alt="First Prompt" style="border-radius:6px">
+      <div style="font-size:13px;font-weight:800;color:var(--t1)">First Prompt</div>
+      <div style="font-size:10px;color:var(--t2);margin-top:2px">Community</div>
     </div>
-
-    <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center">
-      <div style="width:90px;height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:10px"><img src="./img/e27.png" alt="e27" style="max-width:100%;max-height:100%;object-fit:contain;filter:brightness(0) invert(1)"></div>
-      <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:2px">e27</div>
-      <div style="font-size:10px;color:var(--t2)">SE Asia Tech Media</div>
-      <div style="margin-top:6px;padding:3px 10px;border-radius:100px;font-size:9px;font-weight:700;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);color:var(--blue)">Outreach</div>
+    <div class="logo-card">
+      <img src="./img/e27.png" alt="e27" style="filter:brightness(0) invert(1)">
+      <div style="font-size:13px;font-weight:800;color:var(--t1)">e27</div>
+      <div style="font-size:10px;color:var(--t2);margin-top:2px">Media</div>
     </div>
-
-    <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center">
-      <div style="width:90px;height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:10px"><img src="./img/sginnovate.png" alt="SGInnovate" style="max-width:100%;max-height:100%;object-fit:contain"></div>
-      <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:2px">SGInnovate</div>
-      <div style="font-size:10px;color:var(--t2)">Deep Tech Ecosystem</div>
-      <div style="margin-top:6px;padding:3px 10px;border-radius:100px;font-size:9px;font-weight:700;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);color:var(--blue)">Outreach</div>
+    <div class="logo-card">
+      <img src="./img/sginnovate.png" alt="SGInnovate">
+      <div style="font-size:13px;font-weight:800;color:var(--t1)">SGInnovate</div>
+      <div style="font-size:10px;color:var(--t2);margin-top:2px">Ecosystem</div>
     </div>
-
   </div>
 
-  <!-- Closing hook -->
-  <div style="max-width:800px;padding:22px 28px;background:linear-gradient(135deg,rgba(232,195,106,.06),rgba(192,132,252,.05));border:1px solid rgba(232,195,106,.2);border-radius:16px;text-align:center">
-    <div style="font-size:18px;font-weight:900;color:var(--t1);margin-bottom:8px;line-height:1.3">The right 50 people in the room today<br>become the 500 who define ChronoAI tomorrow.</div>
-    <div style="font-size:13px;color:var(--t2);line-height:1.6">This is how communities start. Not with a bang — with a room full of the right people, asking the right questions, in the right place. ChronoAI is that place.</div>
+  <div style="max-width:700px;text-align:center">
+    <div style="font-size:clamp(20px,2.8vw,30px);font-weight:900;color:var(--t1);margin-bottom:10px;line-height:1.2" data-t="67">The right 50 people in the room today<br>become the 500 who define ChronoAI tomorrow.</div>
+    <p style="font-size:14px;color:var(--t2);line-height:1.7" data-t="68">Let's build what's next — together.</p>
   </div>
 </div>
 
@@ -434,10 +358,40 @@ const dotsEl=document.getElementById('dots');
 const ctrEl=document.getElementById('ctr');
 let cur=0;
 slides.forEach((_,i)=>{const d=document.createElement('button');d.className='dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d)});
-function goTo(n){slides[cur].classList.remove('active');document.querySelectorAll('.dot')[cur].classList.remove('active');cur=(n+slides.length)%slides.length;slides[cur].classList.add('active');document.querySelectorAll('.dot')[cur].classList.add('active');ctrEl.textContent=`${cur+1} / ${slides.length}`}
+function goTo(n){slides[cur].classList.remove('active');document.querySelectorAll('.dot')[cur].classList.remove('active');cur=(n+slides.length)%slides.length;slides[cur].classList.add('active');document.querySelectorAll('.dot')[cur].classList.add('active');ctrEl.textContent=`${String(cur+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`}
 function go(d){goTo(cur+d)}
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')go(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1)});
-ctrEl.textContent=`1 / ${slides.length}`;
+ctrEl.textContent=`01 / ${String(slides.length).padStart(2,'0')}`;
+
+function openModal(){document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+
+const zh={
+'1':'ChronoAI · 月度系列','2':'你做了一个App。<br>然后呢？','3':'每个AI构建者在发布后都会问的问题 — 但新加坡还没有人创建一个合适的空间来回答它们。直到现在。',
+'4':'机遇','5':'一人公司正成为<br>科技领域增长最快的<br>细分市场。','6':'AI让一个人就能构建、发布和扩展产品。但独自构建不等于孤立无援。缺少的不是工具 — 而是社区、方向和前进的道路。',
+'7':'构建者需要方向','8':'发布之后，大多数人不知道接下来该做什么 — 营销、商业化、扩展。','9':'知识是碎片化的','10':'洞见分散各处。构建者需要在同一个房间里，从真正的实践者那里获得。','11':'社区是护城河','12':'最有价值的网络是在人们分享真实工作和真实反馈的房间里建立的。',
+'13':'概念','14':'一个映射创始人旅程的<br>月度系列。','15':'每一期围绕一人公司的不同阶段。50位精选的构建者、独立创业者和投资人 — 学习、展示、互相给予真实反馈。','16':'学习','17':'行业专家分享实战经验 — 简短、可执行、无废话。','18':'演示','19':'构建者展示真实产品。完整流程 — 从构建到部署到GTM。','20':'展示与提问','21':'深度反馈。展示你的想法，获得专家直接意见。','22':'周五，3月27日','23':'50位精选参与者','24':'下午5:00 — 7:30','25':'ChronoAI办公室',
+'26':'首期 · 3月27日','27':'你用Vibe Coding做了个App。<br><span style="color:var(--gold)">然后呢？</span>','28':'三位演讲者。两个产品演示。三个外部演示。一个真实反馈环节。全在一个晚上。','29':'5:00 PM — 演讲','30':'5:30 PM — 演示','31':'SoulGarden · RiteSet · 3位精选外部构建者','32':'6:45 PM — 分组','33':'展示与提问反馈 · 开放社交','34':'查看完整日程 →',
+'35':'启动时间线','36':'我们正在快速推进。','37':'一切都在进行中。这是通往3月27日的路径。','38':'提案定稿','39':'分享到WhatsApp<br>AI社区','40':'活动上线<br>Lu.ma','41':'活动准备','42':'确认演示<br>+ 推广','43':'活动日',
+'44':'我们的团队','45':'概念、设计、发布、个人邀请、活动列表','46':'李凡 & Ann的团队','47':'后勤、组织、装饰、嘉宾演讲者协调',
+'48':'系列路线图','49':'五期节目。<br>完整的构建者生命周期。','50':'每一期围绕不同阶段 — 从首次构建到扩展再到重新定义AI原生世界中的工作。','51':'更大的目标','52':'这个系列是<br>The Collective的基石。','53':'一个AI加速器社区，将ChronoAI的公司和合作伙伴聚集在一起 — 支持下一波构建者。','54':'社区','55':'AI加速器','56':'The Collective','57':'系列赋能','58':'商业机会','59':'合作、集成、收入','60':'人才管道','61':'接触我们想要招募或投资的构建者','62':'品牌资产','63':'广告支出无法复制的定位',
+'64':'我们的生态系统','65':'What\'s Next<br>AI Collective 合作伙伴。','66':'使这个系列成为可能的合作伙伴 — 以及我们正在共同构建的生态系统。','67':'今天房间里合适的50人<br>将成为明天定义ChronoAI的500人。','68':'让我们一起构建 What\'s Next。',
+'m0':'完整日程 · 第一期','m1':'活动流程 — 3月27日','m2':'开门','m3':'签到和交流','m4':'开场演讲 — 大厅','m5':'系列欢迎和愿景','m6':'"你用Vibe Coding做了。现在用Vibe Marketing推。"','m7':'适用于独立构建者的方法：AI作为分发渠道，零预算被发现。','m8':'"任何人都能用AI构建。但你能信任你构建的吗？"','m9':'可信AI、问责制和人类构建者的角色。','m10':'ChronoAI应用演示 — 大厅','m11':'3个精选外部演示 — 大厅','m12':'预审社区构建者 · 每个10分钟 + 问答','m13':'分组 + 社交 — 纽约厅 & 大厅','m14':'展示与提问反馈环节（李凡、Wendy、Dannick）· 开放社交','m15':'结束'
+};
+
+let currentLang='en';
+const originals={};
+function setLang(l){
+  currentLang=l;
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang button:${l==='en'?'first':'last'}-child`).classList.add('active');
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const k=el.getAttribute('data-t');
+    if(!originals[k])originals[k]=el.innerHTML;
+    el.innerHTML=l==='zh'&&zh[k]?zh[k]:originals[k];
+  });
+}
 </script>
 </body>
 </html>
