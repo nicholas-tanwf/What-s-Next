@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's Next — CEO Debrief</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;background:#0a0a0a;color:#fff;overflow:hidden;height:100vh;width:100vw}
+
+.deck{width:100vw;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.4,0,.2,1);padding:40px 72px;text-align:center}
+.slide.active{opacity:1;pointer-events:all}
+
+.dots{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:100}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;transition:all .3s;padding:0}
+.dot.active{background:#c8a97e;width:22px;border-radius:3px}
+.arrows{position:fixed;bottom:18px;right:32px;display:flex;gap:8px;z-index:100}
+.arr{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.45);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.arr:hover{background:rgba(255,255,255,.1);color:#fff}
+.ctr{position:fixed;bottom:24px;left:32px;font-size:10px;font-weight:700;color:rgba(255,255,255,.15);letter-spacing:.14em}
+
+:root{
+  --gold:#c8a97e;--gold-dim:rgba(200,169,126,.15);--gold-glow:rgba(200,169,126,.25);
+  --mint:#7eddb5;--mint-dim:rgba(126,221,181,.08);
+  --sky:#7eb8db;--sky-dim:rgba(126,184,219,.08);
+  --coral:#db7e7e;
+  --g1:rgba(255,255,255,.6);--g2:rgba(255,255,255,.38);--g3:rgba(255,255,255,.18)
+}
+
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.title{font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1.04;letter-spacing:-.035em;color:#fff;margin-bottom:6px}
+.sub{font-size:14px;color:var(--g2);line-height:1.7;max-width:700px;margin:0 auto 18px}
+
+.status{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.status.confirmed{background:rgba(126,221,181,.1);border:1px solid rgba(126,221,181,.25);color:var(--mint)}
+.status.live{background:rgba(200,169,126,.1);border:1px solid var(--gold-glow);color:var(--gold)}
+.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+</style>
+</head>
+<body>
+
+<div class="dots" id="dots"></div>
+<div class="arrows">
+  <button class="arr" onclick="go(-1)">←</button>
+  <button class="arr" onclick="go(1)">→</button>
+</div>
+<div class="ctr" id="ctr"></div>
+
+<div class="deck" id="deck">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 1 — COVER + STATUS
+═══════════════════════════════════════════════════════════════ -->
+<div class="slide active">
+  <div class="eyebrow">CEO Debrief · Confidential</div>
+  <div class="title" style="margin-bottom:10px">"What's Next"<br>Monthly Series</div>
+  <div class="sub" style="font-size:16px;color:var(--g1);font-weight:300;margin-bottom:14px">Confirmed direction. Partners aligned. We're moving forward.</div>
+
+  <div class="status confirmed" style="margin-bottom:24px"><div class="status-dot"></div>Ann & Li Fan — confirmed and aligned</div>
+
+  <!-- Quick-read strip -->
+  <div style="display:flex;gap:0;max-width:980px;width:100%;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06);margin-bottom:16px">
+    <div style="flex:1;padding:14px 20px;background:rgba(200,169,126,.06);text-align:left;border-right:1px solid rgba(255,255,255,.05)">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:6px">Series</div>
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px">What's Next</div>
+      <div style="font-size:11px;color:var(--g2);line-height:1.5">Recurring monthly event, each episode focused on a different phase of founding a one-person company.</div>
+    </div>
+    <div style="flex:1;padding:14px 20px;background:rgba(255,255,255,.02);text-align:left;border-right:1px solid rgba(255,255,255,.05)">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--mint);margin-bottom:6px">Episode 1</div>
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px">You Vibe-Coded an App. What's Next?</div>
+      <div style="font-size:11px;color:var(--g2);line-height:1.5">Young solopreneurs and aspiring founders in the early stages of building.</div>
+    </div>
+    <div style="flex:1;padding:14px 20px;background:rgba(255,255,255,.02);text-align:left">
+      <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--sky);margin-bottom:6px">Format</div>
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px">50 pax · Intimate · Curated</div>
+      <div style="font-size:11px;color:var(--g2);line-height:1.5">Quality of audience over size. 50 → 100+ in subsequent editions.</div>
+    </div>
+  </div>
+
+  <!-- Three spaces preview -->
+  <div style="display:flex;gap:8px;max-width:980px;width:100%;margin-bottom:16px">
+    <div style="flex:1;padding:12px 16px;background:rgba(200,169,126,.06);border:1px solid rgba(200,169,126,.15);border-radius:12px;text-align:left">
+      <div style="font-size:16px;margin-bottom:4px">🎓</div>
+      <div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:3px">Space 1 — Learn</div>
+      <div style="font-size:10px;color:var(--g2);line-height:1.5">Experts share knowledge. 10 mins each. Open floor. Professors, Hashmeta, AI Apex Asia.</div>
+    </div>
+    <div style="flex:1;padding:12px 16px;background:rgba(126,184,219,.05);border:1px solid rgba(126,184,219,.12);border-radius:12px;text-align:left">
+      <div style="font-size:16px;margin-bottom:4px">🖥️</div>
+      <div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:3px">Space 2 — Demo</div>
+      <div style="font-size:10px;color:var(--g2);line-height:1.5">Showcase shipped products. SoulGarden, RiteSet + pre-vetted community builders.</div>
+    </div>
+    <div style="flex:1;padding:12px 16px;background:rgba(126,221,181,.05);border:1px solid rgba(126,221,181,.12);border-radius:12px;text-align:left">
+      <div style="font-size:16px;margin-bottom:4px">💬</div>
+      <div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:3px">Space 3 — Show & Ask</div>
+      <div style="font-size:10px;color:var(--g2);line-height:1.5">Intimate feedback from Li Fan, Nicholas (marketing), Dannick (design). New York Room.</div>
+    </div>
+  </div>
+
+  <!-- Bigger goal one-liner -->
+  <div style="max-width:980px;width:100%;padding:10px 20px;background:linear-gradient(135deg,rgba(200,169,126,.06),rgba(191,90,242,.04));border:1px solid rgba(200,169,126,.15);border-radius:10px;display:flex;align-items:center;gap:10px">
+    <span style="font-size:14px">🏛️</span>
+    <div style="font-size:12px;color:var(--g1);text-align:left"><strong style="color:var(--gold)">Bigger Goal:</strong> This series is the foundation for an AI Collective — bringing all our companies together to build an AI accelerator community.</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 2 — PROGRAMMING + SPEAKERS
+═══════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="eyebrow">Programming · Episode 1 · 27 March 2026</div>
+  <div class="title" style="font-size:clamp(26px,3.4vw,44px);margin-bottom:4px">You Vibe-Coded an App.<br><span style="color:var(--gold)">What's Next?</span></div>
+  <div class="sub" style="margin-bottom:12px;font-size:13px">ChronoAI Office · 4:30 PM – 8:30 PM · 50 Pax</div>
+
+  <div style="display:grid;grid-template-columns:260px 1fr;gap:16px;width:100%;max-width:1020px;text-align:left">
+
+    <!-- LEFT: Timeline -->
+    <div>
+      <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px">Event Flow</div>
+
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div style="display:flex;gap:10px;padding-bottom:8px;position:relative">
+          <div style="font-size:10px;font-weight:700;color:var(--g2);width:44px;text-align:right;padding-top:3px;flex-shrink:0">4:30</div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--g3);flex-shrink:0;margin-top:5px"></div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--g1)">Doors Open</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;padding-bottom:8px">
+          <div style="font-size:10px;font-weight:700;color:var(--gold);width:44px;text-align:right;padding-top:3px;flex-shrink:0">5:00</div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;box-shadow:0 0 6px rgba(200,169,126,.4)"></div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--gold)">Opening Speeches</div>
+            <div style="font-size:10px;color:var(--g2)">Lobby · 30 min</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;padding-bottom:8px">
+          <div style="font-size:10px;font-weight:700;color:var(--g2);width:44px;text-align:right;padding-top:3px;flex-shrink:0">5:30</div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--g3);flex-shrink:0;margin-top:5px"></div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--g1)">ChronoAI Demos</div>
+            <div style="font-size:10px;color:var(--g2)">SoulGarden + RiteSet · 30 min</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;padding-bottom:8px">
+          <div style="font-size:10px;font-weight:700;color:var(--g2);width:44px;text-align:right;padding-top:3px;flex-shrink:0">6:00</div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--g3);flex-shrink:0;margin-top:5px"></div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--g1)">3 External Demos</div>
+            <div style="font-size:10px;color:var(--g2)">Pre-vetted community builders · 45 min</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;padding-bottom:8px">
+          <div style="font-size:10px;font-weight:700;color:var(--sky);width:44px;text-align:right;padding-top:3px;flex-shrink:0">6:45</div>
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--sky);flex-shrink:0;margin-top:5px;box-shadow:0 0 6px rgba(126,184,219,.4)"></div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--sky)">Breakout + Networking</div>
+            <div style="font-size:10px;color:var(--g2)">Lobby + New York Room · 45 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Speakers -->
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.14em;margin-bottom:2px">Opening Speakers</div>
+
+      <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px 14px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:12px;font-weight:800;color:#fff">Li Fan</div>
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold)">ChronoAI · Host</div>
+          </div>
+          <span style="font-size:9px;padding:3px 8px;border-radius:5px;background:rgba(255,255,255,.04);color:var(--g2);font-weight:700">5 min</span>
+        </div>
+        <div style="font-size:10px;color:var(--g2);margin-top:4px">Welcome and series vision.</div>
+      </div>
+
+      <div style="background:rgba(200,169,126,.06);border:1px solid rgba(200,169,126,.18);border-radius:10px;padding:10px 14px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:12px;font-weight:800;color:#fff">Terence</div>
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold)">Hashmeta · AI Marketing Leader</div>
+          </div>
+          <span style="font-size:9px;padding:3px 8px;border-radius:5px;background:rgba(200,169,126,.1);color:var(--gold);font-weight:700">10 min</span>
+        </div>
+        <div style="font-size:11px;font-weight:700;font-style:italic;color:var(--g1);margin-top:6px;margin-bottom:4px">"You vibe coded it. Now vibe market it."</div>
+        <div style="font-size:10px;color:var(--g2);line-height:1.55">What actually works for solo builders in 2026 — why traditional marketing fails, how ChatGPT and Perplexity are now your biggest distribution channel, and the practical steps to get discovered without a budget or a team.</div>
+      </div>
+
+      <div style="background:rgba(126,184,219,.05);border:1px solid rgba(126,184,219,.15);border-radius:10px;padding:10px 14px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:12px;font-weight:800;color:#fff">Prof Liu Yang</div>
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--sky)">NTU · President's Chair in CS · Trustworthy AI</div>
+          </div>
+          <span style="font-size:9px;padding:3px 8px;border-radius:5px;background:rgba(126,184,219,.1);color:var(--sky);font-weight:700">10 min</span>
+        </div>
+        <div style="font-size:11px;font-weight:700;font-style:italic;color:var(--g1);margin-top:6px;margin-bottom:4px">"Anyone can build with AI. But can you trust what you built?"</div>
+        <div style="font-size:10px;color:var(--g2);line-height:1.55">Vibe coding has made building faster than ever — but speed without judgment creates new risks. What happens when your AI app makes a wrong decision? Who is accountable? The role of the human builder in 2026.</div>
+      </div>
+
+      <!-- Demo detail -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px">
+        <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px 14px">
+          <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">ChronoAI Demos · 5:30 PM</div>
+          <div style="font-size:11px;color:var(--g1);line-height:1.6">
+            <strong>SoulGarden</strong> — 10 min + 5 min Q&A<br>
+            <strong>RiteSet</strong> — 10 min + 5 min Q&A<br>
+            <span style="color:var(--g2)">Full process: build → deploy → launch → GTM</span>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px 14px">
+          <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">External Demos · 6:00 PM</div>
+          <div style="font-size:11px;color:var(--g1);line-height:1.6">
+            3 curated builders × 15 min each<br>
+            <span style="color:var(--g2)">Pre-vetted submission process.<br>Nicholas, Calvin, Dannick share workflows.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 3 — OPERATIONS + TIMELINE
+═══════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="eyebrow">Operations · Division of Work · Timeline</div>
+  <div class="title" style="font-size:clamp(26px,3.4vw,44px);margin-bottom:4px">Who Owns What.<br><span style="color:var(--gold)">When It Happens.</span></div>
+  <div class="sub" style="margin-bottom:14px;font-size:13px">A shared WhatsApp project group is already active with both sides' key people.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:1020px;text-align:left;margin-bottom:14px">
+
+    <!-- Our team -->
+    <div style="background:rgba(200,169,126,.06);border:1px solid rgba(200,169,126,.18);border-radius:14px;padding:18px 20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:28px;height:28px;border-radius:8px;background:rgba(200,169,126,.15);display:flex;align-items:center;justify-content:center;font-size:13px">🎨</div>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#fff">Our Team</div>
+          <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em">Nicholas · Calvin · Dannick</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--g1)"><strong>Concept & theme</strong> development</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--g1)"><strong>Design</strong> — visuals, branding, deck</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--g1)"><strong>Publishing</strong> — Lu.ma, social, channels</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--g1)"><strong>Personal invitations</strong> — curated guest list</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LF + Ann's team -->
+    <div style="background:rgba(126,221,181,.05);border:1px solid rgba(126,221,181,.15);border-radius:14px;padding:18px 20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:28px;height:28px;border-radius:8px;background:rgba(126,221,181,.12);display:flex;align-items:center;justify-content:center;font-size:13px">🏢</div>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#fff">Li Fan & Ann's Team</div>
+          <div style="font-size:9px;font-weight:700;color:var(--mint);text-transform:uppercase;letter-spacing:.1em">Operations & Logistics</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--mint);flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--g1)"><strong>Logistics</strong> — venue setup, AV, catering</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--mint);flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--g1)"><strong>Organisation</strong> — run-of-show coordination</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--mint);flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--g1)"><strong>Decor</strong> — space styling, signage</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:4px;height:4px;border-radius:50%;background:var(--mint);flex-shrink:0"></div>
+          <div style="font-size:12px;color:var(--g1)"><strong>Guest speakers</strong> — via LF's network</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNCH TIMELINE -->
+  <div style="width:100%;max-width:1020px;margin-bottom:14px">
+    <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px;text-align:left">Launch Timeline</div>
+
+    <div style="display:flex;gap:0;width:100%;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06)">
+
+      <div style="flex:1;padding:14px 18px;background:rgba(200,169,126,.06);border-right:1px solid rgba(255,255,255,.05);text-align:left;position:relative">
+        <div style="position:absolute;top:12px;right:14px"><div class="status live" style="font-size:8px;padding:3px 8px"><div class="status-dot" style="width:4px;height:4px"></div>Urgent</div></div>
+        <div style="font-size:20px;font-weight:900;color:var(--gold);margin-bottom:2px">Tomorrow</div>
+        <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:2px">Event description finalised</div>
+        <div style="font-size:10px;color:var(--g2)">Copy, visuals, speaker bios locked.</div>
+      </div>
+
+      <div style="flex:1;padding:14px 18px;background:rgba(255,255,255,.02);border-right:1px solid rgba(255,255,255,.05);text-align:left">
+        <div style="font-size:20px;font-weight:900;color:var(--sky);margin-bottom:2px">Friday</div>
+        <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:2px">Event goes live</div>
+        <div style="font-size:10px;color:var(--g2)">Lu.ma listing published. Social posts deployed. Outreach begins.</div>
+      </div>
+
+      <div style="flex:1;padding:14px 18px;background:rgba(255,255,255,.02);border-right:1px solid rgba(255,255,255,.05);text-align:left">
+        <div style="font-size:20px;font-weight:900;color:var(--g2);margin-bottom:2px">13–26 Mar</div>
+        <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:2px">Outreach campaign</div>
+        <div style="font-size:10px;color:var(--g2)">WhatsApp channels, LinkedIn, partners. Target: 50 curated RSVPs.</div>
+      </div>
+
+      <div style="flex:1;padding:14px 18px;background:rgba(126,221,181,.06);text-align:left">
+        <div style="font-size:20px;font-weight:900;color:var(--mint);margin-bottom:2px">27 Mar</div>
+        <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:2px">Event Day</div>
+        <div style="font-size:10px;color:var(--g2)">Friday · 5:30 PM – 8:30 PM · ChronoAI Office</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Outreach channels -->
+  <div style="width:100%;max-width:1020px;display:flex;gap:8px;flex-wrap:wrap;text-align:left">
+    <span style="font-size:9px;font-weight:700;color:var(--g3);text-transform:uppercase;letter-spacing:.1em;padding-top:4px;flex-shrink:0">Outreach:</span>
+    <span style="padding:5px 14px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--g2)">📅 Lu.ma listing</span>
+    <span style="padding:5px 14px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--g2)">💬 WhatsApp AI channels</span>
+    <span style="padding:5px 14px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--g2)">🔗 LinkedIn</span>
+    <span style="padding:5px 14px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--g2)">🤝 Partner networks</span>
+    <span style="padding:5px 14px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--g2)">📩 Personal invitations</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 4 — SERIES ROADMAP + VISION
+═══════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="eyebrow">Series Roadmap · The Long Game</div>
+  <div class="title" style="font-size:clamp(26px,3.4vw,44px);margin-bottom:4px">Every Episode Builds<br><span style="color:var(--gold)">Toward the Collective.</span></div>
+  <div class="sub" style="margin-bottom:14px;font-size:13px">Each edition follows the solo founder journey. The community compounds. The brand cements.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:1020px;text-align:left">
+
+    <!-- LEFT: Episodes -->
+    <div>
+      <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.14em;margin-bottom:10px">Episode Roadmap</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+
+        <div style="background:rgba(200,169,126,.06);border:1px solid rgba(200,169,126,.2);border-radius:12px;padding:14px 16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:9px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Episode 1 · 27 March 2026</div>
+              <div style="font-size:14px;font-weight:800;color:#fff;line-height:1.3">You Vibe-Coded an App. What's Next?</div>
+              <div style="font-size:10px;color:var(--g2);margin-top:3px">Build → Launch → GTM for solo builders.</div>
+            </div>
+            <div class="status confirmed" style="font-size:8px;padding:3px 8px;flex-shrink:0;margin-left:10px"><div class="status-dot" style="width:4px;height:4px"></div>Confirmed</div>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px">
+          <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Episode 2</div>
+          <div style="font-size:14px;font-weight:800;color:var(--g1);line-height:1.3">You launched. Pre-revenue. What's Next?</div>
+          <div style="font-size:10px;color:var(--g2);margin-top:3px">Marketing, GTM, first paying user.</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px">
+          <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Episode 3</div>
+          <div style="font-size:14px;font-weight:800;color:var(--g1);line-height:1.3">You hit healthy MRR. What's Next?</div>
+          <div style="font-size:10px;color:var(--g2);margin-top:3px">Expansion, hiring, scaling as a one-person company.</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px">
+          <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Episode 4</div>
+          <div style="font-size:14px;font-weight:800;color:var(--g1);line-height:1.3">AI replaced your job. What's Next?</div>
+          <div style="font-size:10px;color:var(--g2);margin-top:3px">Freedom, reinvention, and what to build with time back.</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px">
+          <div style="font-size:9px;font-weight:800;color:var(--g3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Episode 5</div>
+          <div style="font-size:14px;font-weight:800;color:var(--g1);line-height:1.3">AI as companion. What's Next?</div>
+          <div style="font-size:10px;color:var(--g2);margin-top:3px">The human-AI relationship in daily life and work.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: Growth + Bigger picture -->
+    <div style="display:flex;flex-direction:column;gap:12px">
+
+      <!-- Growth -->
+      <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px 20px">
+        <div style="font-size:9px;font-weight:800;color:var(--mint);text-transform:uppercase;letter-spacing:.14em;margin-bottom:12px">Growth Path</div>
+        <div style="display:flex;align-items:center;gap:0;margin-bottom:8px">
+          <div style="text-align:center;padding:10px 18px;background:rgba(200,169,126,.08);border:1px solid rgba(200,169,126,.2);border-radius:10px">
+            <div style="font-size:24px;font-weight:900;color:var(--gold)">50</div>
+            <div style="font-size:9px;color:var(--g2);margin-top:2px">Episode 1</div>
+          </div>
+          <div style="padding:0 8px;font-size:16px;color:var(--g3)">→</div>
+          <div style="text-align:center;padding:10px 18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px">
+            <div style="font-size:24px;font-weight:900;color:var(--g1)">100</div>
+            <div style="font-size:9px;color:var(--g2);margin-top:2px">Episode 2–3</div>
+          </div>
+          <div style="padding:0 8px;font-size:16px;color:var(--g3)">→</div>
+          <div style="text-align:center;padding:10px 18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px">
+            <div style="font-size:24px;font-weight:900;color:var(--g1)">200+</div>
+            <div style="font-size:9px;color:var(--g2);margin-top:2px">Beyond</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--g2);font-style:italic">Ann and Li Fan are aligned — quality of audience matters more than size at this stage.</div>
+      </div>
+
+      <!-- AI Collective vision -->
+      <div style="flex:1;background:linear-gradient(145deg,rgba(200,169,126,.08),rgba(126,184,219,.05));border:1px solid rgba(200,169,126,.2);border-radius:14px;padding:20px;display:flex;flex-direction:column;justify-content:center">
+        <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:10px">The Bigger Goal</div>
+        <div style="font-size:20px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px">What's Next → AI Collective</div>
+        <div style="font-size:12px;color:var(--g1);line-height:1.65;margin-bottom:14px">This series is the foundation for establishing a <strong style="color:#fff">Collective</strong> — bringing all our companies together to build an <strong style="color:#fff">AI accelerator community</strong>.</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:11px;color:var(--g1);display:flex;gap:8px;align-items:center"><span style="color:var(--gold)">◆</span> Commercial opportunity across portfolio companies</div>
+          <div style="font-size:11px;color:var(--g1);display:flex;gap:8px;align-items:center"><span style="color:var(--gold)">◆</span> Talent pipeline — recruit from the best builders</div>
+          <div style="font-size:11px;color:var(--g1);display:flex;gap:8px;align-items:center"><span style="color:var(--gold)">◆</span> Long-term brand equity no ad spend can replicate</div>
+          <div style="font-size:11px;color:var(--g1);display:flex;gap:8px;align-items:center"><span style="color:var(--gold)">◆</span> ChronoAI as Singapore's AI builder hub — organically</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const dotsEl=document.getElementById('dots');
+const ctrEl=document.getElementById('ctr');
+let cur=0;
+slides.forEach((_,i)=>{
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goTo(i);
+  dotsEl.appendChild(d);
+});
+function goTo(n){
+  slides[cur].classList.remove('active');
+  document.querySelectorAll('.dot')[cur].classList.remove('active');
+  cur=(n+slides.length)%slides.length;
+  slides[cur].classList.add('active');
+  document.querySelectorAll('.dot')[cur].classList.add('active');
+  ctrEl.textContent=`${cur+1} / ${slides.length}`;
+}
+function go(d){goTo(cur+d);}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')go(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1);
+});
+ctrEl.textContent=`1 / ${slides.length}`;
+</script>
+</body>
+</html>
